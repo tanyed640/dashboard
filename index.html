@@ -49,6 +49,20 @@
       <ul id="propertyList" class="space-y-2"></ul>
     </section>
 
+<hr class="my-10" />
+<section class="space-y-4">
+  <h3 class="text-xl font-semibold">Cancel Your Plan</h3>
+  <p class="text-sm text-gray-700">
+    Submit your email and we’ll cancel your subscription within 24 hours.
+  </p>
+  <form id="cancelForm" action="https://formspree.io/f/xzzvjeaj" method="POST" class="space-y-3">
+    <input type="email" name="email" required placeholder="Your Email Address" class="w-full px-4 py-2 border rounded" />
+    <textarea name="reason" placeholder="Optional: Reason for cancellation" class="w-full px-4 py-2 border rounded"></textarea>
+    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full">Submit Cancellation</button>
+    <p id="cancelMsg" class="text-green-600 text-sm hidden mt-2">✅ Your request has been received. We'll follow up shortly.</p>
+  </form>
+</section>
+    
     <hr class="my-10" />
     <section class="space-y-4">
       <h3 class="text-xl font-semibold">More Tools</h3>
@@ -146,6 +160,29 @@
     }
 
     displayProperties();
+
+    document.getElementById('cancelForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const data = new FormData(form);
+
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      document.getElementById('cancelMsg').classList.remove('hidden');
+      form.reset();
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  }).catch(error => {
+    alert("Error submitting the form.");
+  });
+});
   </script>
 </body>
 </html>
+
